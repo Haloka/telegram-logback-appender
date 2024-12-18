@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--    <property name="TG_TOKEN" value="000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU"/>-->
+    <!--    <property name="TG_CHAT_ID" value="00000000"/>-->
+    <property name="LOG_PATTERN" value="%date %level [%thread] %logger [%file:%line] %msg%n"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="telegram" class="io.github.haloka.telegram.logback.TelegramAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <url>https://api.telegram.org/bot{0}/sendMessage</url>
+        <botToken>${TG_TOKEN}</botToken>
+        <chatId>${TG_CHAT_ID}</chatId>
+
+        <rateLimitMaxMessages>20</rateLimitMaxMessages>
+        <rateLimitWindow>PT1M</rateLimitWindow>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="telegram"/>
+    </root>
+
+</configuration>

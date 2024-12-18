@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--    <property name="TG_TOKEN" value="000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU"/>-->
+    <!--    <property name="TG_CHAT_ID" value="00000000"/>-->
+
+    <property name="LOG_PATTERN" value="%date %level [%thread] %logger [%file:%line] %msg%n"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="telegram" class="io.github.haloka.telegram.logback.TelegramAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <url>https://api.telegram.org/bot{0}/sendMessage</url>
+        <botToken>${TG_TOKEN}</botToken>
+        <chatId>${TG_CHAT_ID}</chatId>
+        <timezone>Asia/Tokyo</timezone>
+
+        <!-- The duration is represented by the ISO 8601 duration format -->
+        <!-- https://en.wikipedia.org/wiki/ISO_8601#Durations -->
+        <!-- See Duration in java.time.Duration-->
+        <!-- Examples:-->
+        <!-- "PT20.345S"  parses as "20.345 seconds"-->
+        <!-- "PT15M"      parses as "15 minutes" (where a minute is 60 seconds)-->
+        <!-- "PT10H"      parses as "10 hours" (where an hour is 3600 seconds)-->
+        <!-- "P2D"        parses as "2 days" (where a day is 24 hours or 86400 seconds-->
+        <windowSize>PT1M</windowSize>
+
+        <guardStage>
+            <count>2</count>
+            <duration>PT3M</duration>
+            <label>low 1/4</label>
+        </guardStage>
+        <guardStage>
+            <count>5</count>
+            <duration>PT10M</duration>
+            <label>medium 2/4</label>
+        </guardStage>
+        <guardStage>
+            <count>15</count>
+            <duration>PT20M</duration>
+            <label>high 3/4</label>
+        </guardStage>
+        <guardStage>
+            <count>25</count>
+            <duration>PT4H</duration>
+            <label>very high 4/4</label>
+        </guardStage>
+
+        <httpConnectTimeout>PT10S</httpConnectTimeout>
+        <httpReadTimeout>PT10S</httpReadTimeout>
+        <httpFollowRedirects>true</httpFollowRedirects>
+
+        <threadCorePoolSize>2</threadCorePoolSize>
+        <threadMaxPoolSize>2</threadMaxPoolSize>
+        <threadQueueCapacity>500</threadQueueCapacity>
+        <threadKeepAliveTime>PT1M</threadKeepAliveTime>
+
+        <rateLimitMaxMessages>20</rateLimitMaxMessages>
+        <rateLimitWindow>PT1M</rateLimitWindow>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="telegram"/>
+    </root>
+
+</configuration>
