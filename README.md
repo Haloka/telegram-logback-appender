@@ -103,9 +103,13 @@ Add the following to your `logback.xml`:
         <botToken>YOUR_BOT_TOKEN</botToken>
         <chatId>YOUR_CHAT_ID</chatId>
         <appName>YourAppName</appName>
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
     </appender>
 
-    <root level="ERROR">
+    <root level="INFO">
         <appender-ref ref="TELEGRAM" />
     </root>
 </configuration>
@@ -181,9 +185,13 @@ Suppression levels (need to be configured, default is disabled):
         <!-- Rate Limiting. [Defaults values] -->
         <rateLimitMaxMessages>20</rateLimitMaxMessages>
         <rateLimitWindow>PT1M</rateLimitWindow>
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
     </appender>
 
-    <root level="ERROR">
+    <root level="INFO">
         <appender-ref ref="TELEGRAM" />
     </root>
 </configuration>
