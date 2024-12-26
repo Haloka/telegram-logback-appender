@@ -25,8 +25,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class TelegramAppender extends AppenderBase<ILoggingEvent> {
-    private static final long ONE_MINUTE_MS = 60 * 1000;
-
 
     // Components
     ExecutorService executor;
@@ -37,7 +35,6 @@ public class TelegramAppender extends AppenderBase<ILoggingEvent> {
     final AtomicLong lastResetTime = new AtomicLong(System.currentTimeMillis());
     final AtomicBoolean rateLimitExceeded = new AtomicBoolean(false);
     AlertFormatter formatter;
-    Window window;
 
     // Host information
     String hostIp;
@@ -208,8 +205,14 @@ public class TelegramAppender extends AppenderBase<ILoggingEvent> {
     }
 
     private boolean checkRateLimit(long timestamp) {
-        window.recordEvent(timestamp);
-        return window.getEventCount(timestamp) <= rateConfig.getMaxMessagesPerMinute();
+        long lastReset = lastResetTime.get();
+
+        if (timestamp - lastReset >= rateConfig.getWindowAsJava().toMillis()) {
+            messageCount.set(0);
+            lastResetTime.set(timestamp);
+        }
+
+        return messageCount.incrementAndGet() <= rateConfig.getMaxMessagesPerMinute();
     }
 
     private void processMessageQueue() {
@@ -291,10 +294,7 @@ public class TelegramAppender extends AppenderBase<ILoggingEvent> {
             this.queue = new ArrayBlockingQueue<>(threadConfig.getQueueCapacity());
             this.httpClient = HttpClient.of(httpConfig.getConnectTimeoutAsJava(), httpConfig.getReadTimeoutAsJava(), httpConfig.isFollowRedirects());
             this.rateGuard = new RateGuard(guardConfig, timezone);
-            window = new Window(
-                    rateConfig.getWindowAsJava(),
-                    rateConfig.getMaxMessagesPerMinute() + 1
-            );
+
             startMessageProcessors();
 
 //            addShutdownHook();
