@@ -32,6 +32,9 @@ class Utils {
     }
 
     String getSubMessage(String message, int maxLength) {
+        if (message == null) {
+            return "";
+        }
         return message.length() > maxLength ? message.substring(0, maxLength) + "..." : message;
     }
 
