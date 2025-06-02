@@ -13,17 +13,4 @@ public class GuardStage {
     public void setDuration(String value) {
         this.duration = Duration.parse(value);
     }
-
-    public Duration getDuration() {
-        return duration;
-    }
-
-    public static void main(String[] args) {
-        GuardStage config = new GuardStage();
-        config.setCount(2);
-        config.setDuration("PT3M");
-        config.setLabel("lv1");
-
-        System.out.println(Duration.parse("PT3M"));
-    }
 }

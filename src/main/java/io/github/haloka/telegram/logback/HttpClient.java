@@ -1,5 +1,6 @@
 package io.github.haloka.telegram.logback;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -9,7 +10,7 @@ import java.util.Map;
 class HttpClient {
 
     private final java.net.http.HttpClient client;
-    private Duration readTimeout;
+    private final Duration readTimeout;
 
     HttpClient(Duration connectTimeout, Duration readTimeout, boolean followRedirects) {
         java.net.http.HttpClient.Builder builder = java.net.http.HttpClient.newBuilder()
@@ -44,8 +45,13 @@ class HttpClient {
             );
 
             return handleResponse(response);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RequestException("GET request was interrupted", e);
+        } catch (IOException e) {
+            throw new RequestException("GET request failed due to IO error", e);
         } catch (Exception e) {
-            throw new RequestException("GET request failed", e);
+            throw new RequestException("GET request failed with an unexpected error", e);
         }
     }
 
@@ -66,8 +72,13 @@ class HttpClient {
             );
 
             return handleResponse(response);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RequestException("GET request was interrupted", e);
+        } catch (IOException e) {
+            throw new RequestException("GET request failed due to IO error", e);
         } catch (Exception e) {
-            throw new RequestException("POST request failed", e);
+            throw new RequestException("GET request failed with an unexpected error", e);
         }
     }
 
@@ -87,29 +98,6 @@ class HttpClient {
 
         public RequestException(String message, Throwable cause) {
             super(message, cause);
-        }
-    }
-
-    public static void main(String[] args) {
-        HttpClient httpClient = HttpClient.of(Duration.ofSeconds(10), Duration.ofSeconds(10), true);
-
-        Map<String, String> headers = Map.of(
-            "Content-Type", "application/json",
-            "Authorization", "Bearer token123"
-        );
-
-        try {
-            String data = httpClient.get("http://127.0.0.1:8080/test?tz=-540", headers);
-            System.out.println("GET Response: " + data);
-
-            String jsonBody = "{\"aaa\":\"222\",\"baa\":3}";
-            String postResponse = httpClient.post("http://127.0.0.1:8080/test", jsonBody, headers);
-            System.out.println("POST Response: " + postResponse);
-
-            String postError = httpClient.post("http://127.0.0.1:8080/testA", jsonBody, headers);
-            System.out.println("POST Response: " + postError);
-         } catch (RequestException e) {
-            System.err.println("Request failed: " + e.getMessage());
         }
     }
 }

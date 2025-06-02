@@ -4,7 +4,6 @@ import io.github.haloka.telegram.logback.config.GuardConfig;
 import io.github.haloka.telegram.logback.config.GuardStage;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -103,7 +102,7 @@ class RateGuard {
         Instant time =  Instant.ofEpochMilli(state.getSuppressionStartTime() + state.getSuppressionDuration().toMillis());
 
         return String.format("""
-            🤪 <b>Alert Detention Notice</b>
+            <b>Alert Detention Notice</b>
     
             We've detected an alert going wild with notifications. If this continues, we'll have to take drastic measures:
             • Troublemaker: %s
@@ -125,7 +124,7 @@ class RateGuard {
         Instant time =  Instant.ofEpochMilli(state.getSuppressionStartTime() + state.getSuppressionDuration().toMillis());
 
         return String.format("""
-            😱 <b>Alert Suppression Escalation</b>
+            <b>Alert Suppression Escalation</b>
     
             This alert has gone completely out of control. We're forced to take more severe measures:
             • Perpetrator: %s

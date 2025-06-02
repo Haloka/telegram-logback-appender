@@ -324,11 +324,7 @@ public class TelegramAppender extends AppenderBase<ILoggingEvent> {
             TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(threadConfig.getQueueCapacity()),
             threadFactory,
-            new ThreadPoolExecutor.DiscardPolicy() {
-                @Override
-                public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
-                }
-            }
+            new ThreadPoolExecutor.DiscardPolicy()
         );
 
     }
