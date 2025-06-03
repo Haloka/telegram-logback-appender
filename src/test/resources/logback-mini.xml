@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!--    <property name="TG_TOKEN" value="000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU"/>-->
-    <!--    <property name="TG_CHAT_ID" value="00000000"/>-->
+    <property name="TG_TOKEN" value="000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU"/>
+    <property name="TG_CHAT_ID" value="123456789"/>
     <property name="LOG_PATTERN" value="%date %level [%thread] %logger [%file:%line] %msg%n"/>
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">

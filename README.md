@@ -14,6 +14,8 @@ It provides comprehensive system statistics, error details, and rate limiting to
 - 🌐 Configurable HTTP client settings
 - 🕒 Timezone support for accurate timestamps
 
+![./resources/tg.png](./resources/tg.png "Telegram Logback Appender Example")
+
 ## Message Format
 
 Error messages are formatted with:

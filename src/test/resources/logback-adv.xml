@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!--    <property name="TG_TOKEN" value="000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU"/>-->
-    <!--    <property name="TG_CHAT_ID" value="00000000"/>-->
+    <property name="TG_TOKEN" value="000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU"/>
+    <property name="TG_CHAT_ID" value="123456789"/>
+    <property name="APP_NAME" value="TestTGApp"/>
 
     <property name="LOG_PATTERN" value="%date %level [%thread] %logger [%file:%line] %msg%n"/>
 
@@ -19,6 +20,7 @@
         <url>https://api.telegram.org/bot{0}/sendMessage</url>
         <botToken>${TG_TOKEN}</botToken>
         <chatId>${TG_CHAT_ID}</chatId>
+        <appName>${APP_NAME}</appName>
         <timezone>Asia/Tokyo</timezone>
 
         <!-- The duration is represented by the ISO 8601 duration format -->
