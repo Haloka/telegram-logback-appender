@@ -65,16 +65,15 @@ io.undertow.servlet.handlers.FilterHandler$FilterChainImpl.doFilter(FilterHandle
 
 ### 1. Add Dependency
 
-<del> Add the following dependency to your `pom.xml`: ~
+Add the following dependency to your `pom.xml`: ~
 
 ```xml
 <dependency>
     <groupId>io.github.haloka</groupId>
     <artifactId>telegram-logback-appender</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 </dependency>
 ```
-</del>
 
 ### 2. Create Telegram Bot
 
